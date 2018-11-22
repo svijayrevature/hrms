@@ -1,4 +1,4 @@
-package com.revature.hrms.model.mysql;
+package com.revature.hrms.mysql.model;
 
 import lombok.Data;
 

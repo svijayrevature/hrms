@@ -1,14 +1,11 @@
-package com.revature.hrms.config;
+package com.revature.hrms.mssql.config;
 
 import lombok.Data;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -21,48 +18,44 @@ import java.util.Properties;
 @Data
 @Configuration
 @EnableTransactionManagement
-public class HrmsMySQLDBConfig {
+public class HrmsMSSQLDBConfig {
 
-    @Bean(name = "mysqlDb")
-    @ConfigurationProperties(prefix = "spring.hrms.mysql")
-    public DataSource mysqlDataSource() {
+    @Bean(name = "sqlDb")
+    @ConfigurationProperties(prefix = "spring.hrms.sql")
+    public DataSource sqlDataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(name = "mysqlJdbcTemplate")
-    public JdbcTemplate jdbcTemplate(@Qualifier("mysqlDb") DataSource dsMySQL) {
-        return new JdbcTemplate(dsMySQL);
+    @Bean(name = "sqlJdbcTemplate")
+    public JdbcTemplate sqlJdbcTemplate(@Qualifier("sqlDb")
+                                                DataSource mssql) {
+        return new JdbcTemplate(mssql);
     }
 
-    @Bean(name = "mysqlSessionFactory")
-    public LocalSessionFactoryBean getMysqlSessionFactory() {
+    @Bean(name = "mssqlSessionFactory")
+    public LocalSessionFactoryBean getMssqlSessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(mysqlDataSource());
+        sessionFactory.setDataSource(sqlDataSource());
         sessionFactory.setPackagesToScan(
-                "com.revature.hrms.model.mysql");
+                "com.revature.hrms.mssql.model");
         sessionFactory.setHibernateProperties(additionalProperties());
         return sessionFactory;
     }
 
-    @Bean(name = "mysqlTransactionManager")
-    @Autowired
-    @Primary
-    public HibernateTransactionManager mysqlTransactionManager(
-            @Qualifier("mysqlSessionFactory") SessionFactory sf) {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sf);
-        return transactionManager;
+    @Bean(name = "mssqlTransactionManager")
+    public HibernateTransactionManager mssqlTransactionManager() {
+        return new HibernateTransactionManager(getMssqlSessionFactory().getObject());
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor mysqlExceptionTranslation() {
+    public PersistenceExceptionTranslationPostProcessor mssqlExceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    Properties additionalProperties() {
+    private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLInnoDBDialect");
-        properties.setProperty("hibernate.default_schema", "hrms");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
+        properties.setProperty("hibernate.default_schema", "cosec1.dbo");
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("hibernate.format_sql", "true");
         properties.setProperty("hibernate.use_sql_comments", "true");

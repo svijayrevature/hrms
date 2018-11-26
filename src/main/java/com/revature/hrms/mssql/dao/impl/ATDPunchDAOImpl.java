@@ -2,6 +2,7 @@ package com.revature.hrms.mssql.dao.impl;
 
 import com.revature.hrms.mssql.dao.ATDPunchDAO;
 import com.revature.hrms.mssql.model.ATDPunch;
+import com.revature.hrms.util.CalendarUtils;
 import lombok.Data;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,12 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 @Data
 @Repository
 @Transactional(readOnly = true)
 public class ATDPunchDAOImpl implements ATDPunchDAO {
+
+    private static final String SELECT_COLUMNS = "select ROW_NUMBER() OVER (order by Edatetime) ID,UserID " +
+            ",Edatetime " +
+            ",IOType " +
+            "FROM Mx_AtdPunch a ";
 
     @Autowired
     @Qualifier("mssqlSessionFactory")
@@ -31,16 +38,16 @@ public class ATDPunchDAOImpl implements ATDPunchDAO {
 
     @Override
     public List<ATDPunch> getAllPunchEntries() {
-        String query = "from ATDPunch";
-        List<ATDPunch> data = getCurrentSession().createQuery(query).getResultList();
-        return data;
+        String query = SELECT_COLUMNS;
+        return getCurrentSession().createNativeQuery(query, ATDPunch.class).getResultList();
     }
 
     @Override
     public List<ATDPunch> getAllPunchEntriesNotInDates(Timestamp date) {
-        String queryString = "from ATDPunch a where substring(a.entryTimestamp,1,10) > substring(:date,1,10)";
-        Query query = getCurrentSession().createQuery(queryString).setParameter("date", date);
-        List<ATDPunch> data = query.getResultList();
-        return data;
+        String queryString = SELECT_COLUMNS + " where a.Edatetime >= :date";
+        date = CalendarUtils.resetTimestampTime(date);
+        date = CalendarUtils.addFieldToTimestamp(date, Calendar.DAY_OF_MONTH, 1);
+        Query query = getCurrentSession().createNativeQuery(queryString, ATDPunch.class).setParameter("date", date);
+        return query.getResultList();
     }
 }

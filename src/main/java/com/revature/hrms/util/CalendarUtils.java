@@ -247,7 +247,7 @@ public class CalendarUtils {
     /**
      * This method is used to convert any timezone from UTC
      *
-     * @param date
+     * @param input
      * @param timeZone
      * @return Date
      */
@@ -1100,30 +1100,15 @@ public class CalendarUtils {
         return formatedDate;
     }
 
-    /**
-     * This method is used to get zone id from Sting
-     *
-     * @param timeZone
-     * @return List<Date>
-     */
-    public String getZoneID(String day) {
-        String zones = "";
-        if (day.equalsIgnoreCase("AKST")) {
-            zones = "US/Alaska";
-        } else if (day.equalsIgnoreCase("EST")) {
-            zones = "America/New_York";
-        } else if (day.equalsIgnoreCase("CST")) {
-            zones = "US/Central";
-        } else if (day.equalsIgnoreCase("HAST")) {
-            zones = "US/Hawaii";
-        } else if (day.equalsIgnoreCase("MST")) {
-            zones = "US/Mountain";
-        } else if (day.equalsIgnoreCase("PST")) {
-            zones = "US/Pacific";
-        } else if (day.equalsIgnoreCase("IST")) {
-            zones = "Asia/Kolkata";
-        }
-        return zones;
+    public static Timestamp resetTimestampTime(Timestamp timestamp) {
+        Calendar cal = Calendar.getInstance();       // get calendar instance
+        cal.setTimeInMillis(timestamp.getTime());                           // set cal to date
+        cal.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
+        cal.set(Calendar.MINUTE, 0);                 // set minute in hour
+        cal.set(Calendar.SECOND, 0);                 // set second in minute
+        cal.set(Calendar.MILLISECOND, 0);
+        timestamp = new Timestamp(cal.getTimeInMillis());
+        return timestamp;
     }
 
     /**
@@ -1167,5 +1152,39 @@ public class CalendarUtils {
             calendar.setTime(newDate);
         }
         return calendar;
+    }
+
+    public static Timestamp addFieldToTimestamp(Timestamp timestamp, int type, Integer amount) {
+        Calendar cal = Calendar.getInstance();       // get calendar instance
+        cal.setTimeInMillis(timestamp.getTime());                           // set cal to date
+        cal.add(type, amount);
+        timestamp = new Timestamp(cal.getTimeInMillis());
+        return timestamp;
+    }
+
+    /**
+     * This method is used to get zone id from Sting
+     *
+     * @param day
+     * @return List<Date>
+     */
+    public String getZoneID(String day) {
+        String zones = "";
+        if (day.equalsIgnoreCase("AKST")) {
+            zones = "US/Alaska";
+        } else if (day.equalsIgnoreCase("EST")) {
+            zones = "America/New_York";
+        } else if (day.equalsIgnoreCase("CST")) {
+            zones = "US/Central";
+        } else if (day.equalsIgnoreCase("HAST")) {
+            zones = "US/Hawaii";
+        } else if (day.equalsIgnoreCase("MST")) {
+            zones = "US/Mountain";
+        } else if (day.equalsIgnoreCase("PST")) {
+            zones = "US/Pacific";
+        } else if (day.equalsIgnoreCase("IST")) {
+            zones = "Asia/Kolkata";
+        }
+        return zones;
     }
 }

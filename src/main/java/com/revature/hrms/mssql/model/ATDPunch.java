@@ -14,6 +14,9 @@ import java.sql.Timestamp;
 @Table(name = "Mx_AtdPunch")
 public class ATDPunch {
     @Id
+    @Column(name = "ID")
+    private Long id;
+
     @Column(name = "UserID")
     private String userId;
 

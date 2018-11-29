@@ -24,4 +24,30 @@ public class BiometricLog {
     private Timestamp entryTimestamp;
     @Column(name = "RECORD_TYPE")
     private Boolean entryType;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public Timestamp getEntryTimestamp() {
+		return entryTimestamp;
+	}
+	public void setEntryTimestamp(Timestamp entryTimestamp) {
+		this.entryTimestamp = entryTimestamp;
+	}
+	public Boolean getEntryType() {
+		return entryType;
+	}
+	public void setEntryType(Boolean entryType) {
+		this.entryType = entryType;
+	}
+    
+   
 }

@@ -34,12 +34,12 @@ public class ReportController {
     public String getSQLReport() {
         List<BiometricLog> biometricLogs = new ArrayList<>();
         List<ATDPunch> atdPunches;
-        List<BiometricLog> biometricLogsInDB = getBiometricLogService().getAllBiometricLogs();
+        List<BiometricLog> biometricLogsInDB = biometricLogService.getAllBiometricLogs();
         List<Timestamp> dates = biometricLogsInDB.stream().map(BiometricLog::getEntryTimestamp).distinct().collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(dates)) {
-            atdPunches = getAtdPunchService().getAllPunchEntriesAfterDates(Collections.max(dates));
+            atdPunches = atdPunchService.getAllPunchEntriesAfterDates(Collections.max(dates));
         } else {
-            atdPunches = getAtdPunchService().getAllPunchEntries();
+            atdPunches = atdPunchService.getAllPunchEntries();
         }
         for (ATDPunch atdPunch :
                 atdPunches) {
@@ -49,7 +49,7 @@ public class ReportController {
             biometricLog.setUserId(atdPunch.getUserId());
             biometricLogs.add(biometricLog);
         }
-        Integer numberOfRecordsSaved = getBiometricLogService().saveOrUpdateAllBiometricLogs(biometricLogs);
+        Integer numberOfRecordsSaved = biometricLogService.saveOrUpdateAllBiometricLogs(biometricLogs);
         return numberOfRecordsSaved + " Record(s) saved successfully";
     }
 

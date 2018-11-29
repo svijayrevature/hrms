@@ -55,13 +55,15 @@ public class HrmsMSSQLDBConfig {
     private Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
-        properties.setProperty("hibernate.default_schema", "cosec1.dbo");
+        properties.setProperty("hibernate.default_schema", "cosec.dbo");
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("hibernate.format_sql", "true");
         properties.setProperty("hibernate.use_sql_comments", "true");
         properties.setProperty("hibernate.generate_statistics", "false");
         properties.setProperty("hibernate.connection.autocommit", "false");
         properties.setProperty("hibernate.id.new_generator_mappings", "false");
+        properties.setProperty("hibernate.jdbc.batch_size", "20");
+        
 
         return properties;
     }

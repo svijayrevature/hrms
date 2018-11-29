@@ -22,7 +22,7 @@ public class BiometricLogDAOImpl implements BiometricLogDAO {
     SessionFactory mysqlSessionFactory;
 
     private Session getCurrentSession() {
-        return getMysqlSessionFactory().getCurrentSession();
+        return mysqlSessionFactory.getCurrentSession();
     }
 
     @Override
@@ -33,8 +33,12 @@ public class BiometricLogDAOImpl implements BiometricLogDAO {
 
     @Override
     public Integer saveOrUpdateAllBiometricLogs(List<BiometricLog> biometricLogs) {
-        for (BiometricLog biometricLog : biometricLogs) {
-            getCurrentSession().save(biometricLog);
+        for (int i=0;i<biometricLogs.size();i++) {
+            getCurrentSession().save(biometricLogs.get(i));
+            if(i% 20 == 0) {
+            	getCurrentSession().flush();
+            	getCurrentSession().clear();
+            }
         }
         return biometricLogs.size();
     }

@@ -29,4 +29,26 @@ public class ATDPunch {
     public void setEntryType(Object entryType) {
         this.entryType = TypeConversionUtil.toBool(entryType);
     }
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public Timestamp getEntryTimestamp() {
+		return entryTimestamp;
+	}
+
+	public void setEntryTimestamp(Timestamp entryTimestamp) {
+		this.entryTimestamp = entryTimestamp;
+	}
+
+	public Boolean getEntryType() {
+		return entryType;
+	}
+
+    
 }

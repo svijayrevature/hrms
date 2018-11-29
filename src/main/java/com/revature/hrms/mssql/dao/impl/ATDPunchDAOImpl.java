@@ -24,21 +24,21 @@ public class ATDPunchDAOImpl implements ATDPunchDAO {
     private static final String SELECT_COLUMNS = "select ROW_NUMBER() OVER (order by Edatetime) ID,UserID " +
             ",Edatetime " +
             ",IOType " +
-            "FROM Mx_AtdPunch a ";
+            "FROM Mx_AtdPunch a";
 
     @Autowired
     @Qualifier("mssqlSessionFactory")
     private SessionFactory mssqlSessionFactory;
 
     private Session getCurrentSession() {
-        Session session = getMssqlSessionFactory().getCurrentSession();
+        Session session = mssqlSessionFactory.getCurrentSession();
         session.setDefaultReadOnly(true);
         return session;
     }
 
     @Override
     public List<ATDPunch> getAllPunchEntries() {
-        String query = SELECT_COLUMNS;
+        String query = SELECT_COLUMNS + " where a.userId = 'RCS171'";
         return getCurrentSession().createNativeQuery(query, ATDPunch.class).getResultList();
     }
 

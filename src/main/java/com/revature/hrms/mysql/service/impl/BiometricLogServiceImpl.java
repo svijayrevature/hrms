@@ -18,11 +18,11 @@ public class BiometricLogServiceImpl implements BiometricLogService {
 
     @Override
     public List<BiometricLog> getAllBiometricLogs() {
-        return getBiometricLogDAO().getAllBiometricLogs();
+        return biometricLogDAO.getAllBiometricLogs();
     }
 
     @Override
     public Integer saveOrUpdateAllBiometricLogs(List<BiometricLog> biometricLogs) {
-        return getBiometricLogDAO().saveOrUpdateAllBiometricLogs(biometricLogs);
+        return biometricLogDAO.saveOrUpdateAllBiometricLogs(biometricLogs);
     }
 }

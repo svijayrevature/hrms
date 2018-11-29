@@ -19,11 +19,11 @@ public class ATDPunchServiceImpl implements ATDPunchService {
 
     @Override
     public List<ATDPunch> getAllPunchEntries() {
-        return getAtdPunchDAO().getAllPunchEntries();
+        return atdPunchDAO.getAllPunchEntries();
     }
 
     @Override
     public List<ATDPunch> getAllPunchEntriesAfterDates(Timestamp date) {
-        return getAtdPunchDAO().getAllPunchEntriesNotInDates(date);
+        return atdPunchDAO.getAllPunchEntriesNotInDates(date);
     }
 }

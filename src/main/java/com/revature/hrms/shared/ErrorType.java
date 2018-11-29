@@ -1,5 +1,5 @@
 package com.revature.hrms.shared;
 
 public enum ErrorType {
-    CLIENT, SEVERE, UNKNOWN, CONFIGURATION
+  CLIENT, SEVERE, UNKNOWN, CONFIGURATION
 }

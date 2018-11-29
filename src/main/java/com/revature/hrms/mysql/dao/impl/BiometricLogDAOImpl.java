@@ -54,13 +54,14 @@ public class BiometricLogDAOImpl implements BiometricLogDAO {
       endDate = startDate;
       startDate = timestamp;
     }
-    String queryString = "SELECT b.`USER_ID` AS \"userCode\", "
-        + "GROUP_CONCAT(b.`RECORD_TIMESTAMP` ) AS \"timestamps\", "
-        + " GROUP_CONCAT(b.`RECORD_TYPE`) AS \"timestampTypes\" " + "     FROM biometric_logs b "
+    String queryString = "SELECT b.`USER_ID` AS 'userCode', "
+        + "GROUP_CONCAT(b.`RECORD_TIMESTAMP` ) AS 'timestamps', "
+        + " GROUP_CONCAT(b.`RECORD_TYPE`) AS 'timestampTypes' FROM biometric_logs b "
         + " WHERE DATE(b.`RECORD_TIMESTAMP`) BETWEEN :startDate AND :endDate "
-        + "      GROUP BY DATE(b.`RECORD_TIMESTAMP`), b.`USER_ID` "
-        + "      ORDER BY b.`USER_ID` ASC, b.`RECORD_TIMESTAMP` DESC";
+        + " GROUP BY DATE(b.`RECORD_TIMESTAMP`), b.`USER_ID` "
+        + " ORDER BY b.`USER_ID` ASC, b.`RECORD_TIMESTAMP` DESC";
 
+    @SuppressWarnings("deprecation")
     Query query = getCurrentSession().createNativeQuery(queryString)
         .setResultTransformer(Transformers.aliasToBean(UserReport.class));
     query.setParameter("startDate", startDate);

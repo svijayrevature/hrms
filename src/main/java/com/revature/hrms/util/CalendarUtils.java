@@ -420,6 +420,16 @@ public class CalendarUtils {
 
   }
 
+  public static long getHoursDifferenceBtwTimestamps(Timestamp timestamp1, Timestamp timestamp2) {
+    long milliseconds1 = timestamp2.getTime();
+    long milliseconds2 = timestamp1.getTime();
+
+    long diff = Math.abs(milliseconds2 - milliseconds1);
+    long diffHours = diff / (60 * 60 * 1000);
+
+    return diffHours;
+  }
+
   /**
    * Get days of previous week.
    *
@@ -1136,8 +1146,9 @@ public class CalendarUtils {
    */
   public Calendar getCalenderDate(Integer today, String month, Integer year) {
 
-    if (month == null || year == null)
+    if (month == null || year == null) {
       return null;
+    }
 
     HashMap<String, Integer> map = new HashMap<>();
     map.put("January", 1);

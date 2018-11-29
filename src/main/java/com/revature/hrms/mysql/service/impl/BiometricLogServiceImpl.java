@@ -4,9 +4,11 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.revature.hrms.mysql.dao.BiometricLogDAO;
 import com.revature.hrms.mysql.dto.TimestampLogs;
@@ -45,12 +47,19 @@ public class BiometricLogServiceImpl implements BiometricLogService {
       String[] typeStrings = ur.getTimestampTypes().split(",");
       if (timeStrings.length == typeStrings.length) {
         List<TimestampLogs> timestampLogs = new ArrayList<>();
+        double hoursSpent = 0;
         for (int i = 0; i < timeStrings.length; i++) {
           TimestampLogs timestampLog = new TimestampLogs();
           timestampLog.setTimestamp(CalendarUtils
               .convertStringDateToTimestampForFormat(timeStrings[i], "yyyy-MM-dd hh:mm:ss"));
           timestampLog.setType(TypeConversionUtil.toBool(typeStrings[i]));
-          timestampLogs.add(timestampLog);
+          if (CollectionUtils.isEmpty(timestampLogs)
+              || (Objects.nonNull(timestampLogs.get(timestampLogs.size() - 1))
+                  && Objects.nonNull(timestampLogs.get(timestampLogs.size() - 1).getType())
+                  && Objects.nonNull(timestampLog.getType()) && !timestampLogs
+                      .get(timestampLogs.size() - 1).getType().equals(timestampLog.getType()))) {
+            timestampLogs.add(timestampLog);
+          }
         }
         ur.setTimestampLogs(timestampLogs);
       }

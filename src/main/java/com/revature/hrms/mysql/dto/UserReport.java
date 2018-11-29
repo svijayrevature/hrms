@@ -14,4 +14,5 @@ public class UserReport {
   private String timestamps;
   @JsonIgnore
   private String timestampTypes;
+  private double hoursSpent;
 }

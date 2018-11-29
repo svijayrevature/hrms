@@ -1187,4 +1187,10 @@ public class CalendarUtils {
         }
         return zones;
     }
+
+    public static Timestamp convertStringDateToTimestampForFormat(String date, String format) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        return new Timestamp(dateFormat.parse(date).getTime());
+
+    }
 }

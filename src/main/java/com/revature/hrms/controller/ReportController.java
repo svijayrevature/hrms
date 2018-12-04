@@ -19,6 +19,7 @@ import com.revature.hrms.mssql.model.ATDPunch;
 import com.revature.hrms.mssql.service.ATDPunchService;
 import com.revature.hrms.mysql.dto.UserReport;
 import com.revature.hrms.mysql.model.BiometricLog;
+import com.revature.hrms.mysql.model.Employee;
 import com.revature.hrms.mysql.service.BiometricLogService;
 import com.revature.hrms.util.CalendarUtils;
 
@@ -43,20 +44,26 @@ public class ReportController {
     List<BiometricLog> biometricLogsInDB = getBiometricLogService().getAllBiometricLogs();
     List<Timestamp> dates = biometricLogsInDB.stream().map(BiometricLog::getEntryTimestamp)
         .distinct().collect(Collectors.toList());
+    List<Employee> employees = getBiometricLogService().getAllEmployees();
     if (!CollectionUtils.isEmpty(dates)) {
       atdPunches = getAtdPunchService().getAllPunchEntriesAfterDates(Collections.max(dates));
     } else {
       atdPunches = getAtdPunchService().getAllPunchEntries();
     }
+    atdPunches =
+        atdPunches
+            .stream().filter(atdp -> employees.stream().map(Employee::getCode)
+                .collect(Collectors.toList()).contains(atdp.getUserId()))
+            .collect(Collectors.toList());
+    long numberOfRecordsSaved = 0L;
     for (ATDPunch atdPunch : atdPunches) {
       BiometricLog biometricLog = new BiometricLog();
       biometricLog.setEntryTimestamp(atdPunch.getEntryTimestamp());
       biometricLog.setEntryType(atdPunch.getEntryType());
       biometricLog.setUserId(atdPunch.getUserId());
-      biometricLogs.add(biometricLog);
+      getBiometricLogService().saveOrUpdateBiometricLog(biometricLog);
+      ++numberOfRecordsSaved;
     }
-    Integer numberOfRecordsSaved =
-        getBiometricLogService().saveOrUpdateAllBiometricLogs(biometricLogs);
     return numberOfRecordsSaved + " Record(s) saved successfully";
   }
 

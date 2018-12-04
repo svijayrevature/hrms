@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.revature.hrms.mysql.dao.BiometricLogDAO;
 import com.revature.hrms.mysql.dto.UserReport;
 import com.revature.hrms.mysql.model.BiometricLog;
+import com.revature.hrms.mysql.model.Employee;
 
 import lombok.Data;
 
@@ -40,11 +41,9 @@ public class BiometricLogDAOImpl implements BiometricLogDAO {
   }
 
   @Override
-  public Integer saveOrUpdateAllBiometricLogs(List<BiometricLog> biometricLogs) {
-    for (BiometricLog biometricLog : biometricLogs) {
-      getCurrentSession().save(biometricLog);
-    }
-    return biometricLogs.size();
+  public boolean saveOrUpdateBiometricLog(BiometricLog biometricLog) {
+    getCurrentSession().save(biometricLog);
+    return true;
   }
 
   @Override
@@ -54,11 +53,14 @@ public class BiometricLogDAOImpl implements BiometricLogDAO {
       endDate = startDate;
       startDate = timestamp;
     }
-    String queryString = "SELECT b.`USER_ID` AS 'userCode', "
-        + "GROUP_CONCAT(b.`RECORD_TIMESTAMP` ) AS 'timestamps', "
-        + " GROUP_CONCAT(b.`RECORD_TYPE`) AS 'timestampTypes' FROM biometric_logs b "
-        + " WHERE DATE(b.`RECORD_TIMESTAMP`) BETWEEN :startDate AND :endDate "
-        + " GROUP BY DATE(b.`RECORD_TIMESTAMP`), b.`USER_ID` "
+    String queryString = "SELECT b.`USER_ID` AS 'userCode',  "
+        + "GROUP_CONCAT(b.`RECORD_TIMESTAMP` ) AS 'timestamps',  "
+        + " GROUP_CONCAT(b.`RECORD_TYPE`) AS 'timestampTypes', "
+        + " st.START AS 'shiftStartTime', st.END  AS 'shiftEndTime' FROM biometric_logs b "
+        + " JOIN employees e ON e.`CODE` = b.`USER_ID` "
+        + " JOIN shift_timings st ON st.`ID` = e.`SHIFT_ID` "
+        + " WHERE DATE(b.`RECORD_TIMESTAMP`) BETWEEN :startDate AND :endDate  "
+        + " GROUP BY DATE(b.`RECORD_TIMESTAMP`), b.`USER_ID`  "
         + " ORDER BY b.`USER_ID` ASC, b.`RECORD_TIMESTAMP` DESC";
 
     @SuppressWarnings("deprecation")
@@ -67,5 +69,11 @@ public class BiometricLogDAOImpl implements BiometricLogDAO {
     query.setParameter("startDate", startDate);
     query.setParameter("endDate", endDate);
     return query.getResultList();
+  }
+
+  @Override
+  public List<Employee> getAllEmployees() {
+    String query = "from Employee";
+    return getCurrentSession().createQuery(query).getResultList();
   }
 }

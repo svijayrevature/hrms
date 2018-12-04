@@ -6,12 +6,15 @@ import java.util.List;
 
 import com.revature.hrms.mysql.dto.UserReport;
 import com.revature.hrms.mysql.model.BiometricLog;
+import com.revature.hrms.mysql.model.Employee;
 
 public interface BiometricLogService {
   List<BiometricLog> getAllBiometricLogs();
 
-  Integer saveOrUpdateAllBiometricLogs(List<BiometricLog> biometricLogs);
+  boolean saveOrUpdateBiometricLog(BiometricLog biometricLog);
 
   List<UserReport> getUserLogReportBetweenTheDays(Timestamp startDate, Timestamp endDate)
       throws ParseException;
+
+  List<Employee> getAllEmployees();
 }

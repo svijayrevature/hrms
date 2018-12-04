@@ -7,7 +7,7 @@ import com.revature.hrms.util.TypeConversionUtil;
 import lombok.Data;
 
 @Data
-public class TimestampLogs {
+public class TimestampLog {
   Timestamp timestamp;
   Boolean type;
 

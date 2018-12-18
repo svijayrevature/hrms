@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- Our go-to executor for asynchronous tasks. -->
+    <task:executor id="executor" pool-size="1-30"
+                   queue-capacity="0" rejection-policy="CALLER_RUNS" keep-alive="60"/>
+
+    <!-- Our go-to scheduler for tasks that must be promised. -->
+    <task:scheduler id="scheduler" pool-size="2"/>
+
+    <!-- Tag for setting our default executor and scheduler for @Async and @Scheduled -->
+    <task:annotation-driven executor="executor"
+                            scheduler="scheduler"/>
+
+</beans>

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,8 +39,8 @@ public class ReportController {
   private SessionFactory mysqlSessionFactory;
 
   @RequestMapping(value = "/syncDatabases")
+  @Scheduled(cron = "${rates.refresh.cron.log.sync}")
   public String getSQLReport() {
-    List<BiometricLog> biometricLogs = new ArrayList<>();
     List<ATDPunch> atdPunches;
     List<BiometricLog> biometricLogsInDB = getBiometricLogService().getAllBiometricLogs();
     List<Timestamp> dates = biometricLogsInDB.stream().map(BiometricLog::getEntryTimestamp)

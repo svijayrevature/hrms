@@ -9,3 +9,6 @@ export HRMS_MYSQL_PASSWORD="20181205"
 export HRMS_MYSQL_URL="jdbc:mysql://hrms-mysql.cvabfvhtaivi.ap-south-1.rds.amazonaws.com:3306/hrms"
 export HRMS_MYSQL_USERNAME="hrms"
 export HRMS_MYSQL_PASSWORD="20181205"
+
+#  Sync Interval cron
+export LOG_SYNC_INTERVAL="0 30 2 * * ?"

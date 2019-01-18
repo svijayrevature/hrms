@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,17 +32,21 @@ import lombok.Data;
 @RestController
 public class ReportController {
 
+  private final static Logger LOGGER = LogManager.getLogger(ReportController.class.getName());
+
   @Autowired
   ATDPunchService atdPunchService;
+
   @Autowired
   BiometricLogService biometricLogService;
+
   @Autowired
   @Qualifier("mysqlSessionFactory")
   private SessionFactory mysqlSessionFactory;
 
   @RequestMapping(value = "/syncDatabases")
   @Scheduled(cron = "${rates.refresh.cron.log.sync}")
-  public String getSQLReport() {
+  public void getSQLReport() {
     List<ATDPunch> atdPunches;
     List<BiometricLog> biometricLogsInDB = getBiometricLogService().getAllBiometricLogs();
     List<Timestamp> dates = biometricLogsInDB.stream().map(BiometricLog::getEntryTimestamp)
@@ -65,7 +71,7 @@ public class ReportController {
       getBiometricLogService().saveOrUpdateBiometricLog(biometricLog);
       ++numberOfRecordsSaved;
     }
-    return numberOfRecordsSaved + " Record(s) saved successfully";
+    LOGGER.info(numberOfRecordsSaved + " Record(s) saved successfully");
   }
 
   @RequestMapping(value = "/getUserReport")

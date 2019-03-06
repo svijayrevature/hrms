@@ -28,4 +28,9 @@ public class ATDPunchServiceImpl implements ATDPunchService {
   public List<ATDPunch> getAllPunchEntriesAfterDates(Timestamp date) {
     return getAtdPunchDAO().getAllPunchEntriesNotInDates(date);
   }
+  
+  @Override
+  public List<ATDPunch> getAllPunchEntriesBeforeDates(Timestamp date) {
+    return getAtdPunchDAO().getAllPunchEntriesNotInDates(date);
+  }
 }

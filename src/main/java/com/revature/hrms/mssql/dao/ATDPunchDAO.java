@@ -9,4 +9,6 @@ public interface ATDPunchDAO {
   List<ATDPunch> getAllPunchEntries();
 
   List<ATDPunch> getAllPunchEntriesNotInDates(Timestamp date);
+
+List<ATDPunch> getAllPunchEntriesBeforeDates(Timestamp date, List<String> userCodes);
 }

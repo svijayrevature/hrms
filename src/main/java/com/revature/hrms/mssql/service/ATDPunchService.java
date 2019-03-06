@@ -9,4 +9,6 @@ public interface ATDPunchService {
   List<ATDPunch> getAllPunchEntries();
 
   List<ATDPunch> getAllPunchEntriesAfterDates(Timestamp date);
+
+List<ATDPunch> getAllPunchEntriesBeforeDates(Timestamp date);
 }

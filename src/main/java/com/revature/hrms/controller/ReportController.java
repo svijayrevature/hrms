@@ -48,11 +48,13 @@ public class ReportController {
   @Scheduled(cron = "${rates.refresh.cron.log.sync}")
   public void getSQLReport() {
     List<ATDPunch> atdPunches;
+    List<ATDPunch> oldPunches;
     List<BiometricLog> biometricLogsInDB = getBiometricLogService().getAllBiometricLogs();
     List<Timestamp> dates = biometricLogsInDB.stream().map(BiometricLog::getEntryTimestamp)
         .distinct().collect(Collectors.toList());
     List<Employee> employees = getBiometricLogService().getAllEmployees();
     if (!CollectionUtils.isEmpty(dates)) {
+    	oldPunches = getAtdPunchService().getAllPunchEntriesAfterDates(Collections.max(dates));
       atdPunches = getAtdPunchService().getAllPunchEntriesAfterDates(Collections.max(dates));
     } else {
       atdPunches = getAtdPunchService().getAllPunchEntries();

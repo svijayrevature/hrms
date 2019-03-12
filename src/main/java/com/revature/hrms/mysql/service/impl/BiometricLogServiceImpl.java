@@ -105,4 +105,9 @@ public class BiometricLogServiceImpl implements BiometricLogService {
   public List<Employee> getAllEmployees() {
     return getBiometricLogDAO().getAllEmployees();
   }
+
+  @Override
+  public List<String> getEmployeeCodes() {
+    return biometricLogDAO.getEmployeeCode();
+  }
 }

@@ -54,8 +54,11 @@ public class ReportController {
         .distinct().collect(Collectors.toList());
     List<Employee> employees = getBiometricLogService().getAllEmployees();
     if (!CollectionUtils.isEmpty(dates)) {
-    	oldPunches = getAtdPunchService().getAllPunchEntriesAfterDates(Collections.max(dates));
+      oldPunches = getAtdPunchService().getAllPunchEntriesBeforeDates(Collections.max(dates),
+          biometricLogService.getEmployeeCodes());
       atdPunches = getAtdPunchService().getAllPunchEntriesAfterDates(Collections.max(dates));
+      oldPunches.addAll(atdPunches);
+      atdPunches = oldPunches;
     } else {
       atdPunches = getAtdPunchService().getAllPunchEntries();
     }

@@ -3,6 +3,7 @@ package com.revature.hrms.mysql.dao.impl;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Query;
 
@@ -75,5 +76,15 @@ public class BiometricLogDAOImpl implements BiometricLogDAO {
   public List<Employee> getAllEmployees() {
     String query = "from Employee";
     return getCurrentSession().createQuery(query).getResultList();
+  }
+
+  @Override
+  public List<String> getEmployeeCode() {
+    String str =
+        "SELECT e.`CODE` userCode FROM employees e WHERE e.`CODE` NOT IN (SELECT user_ID FROM biometric_logs b GROUP BY user_ID)";
+    Query query = getCurrentSession().createNativeQuery(str)
+        .setResultTransformer(Transformers.aliasToBean(UserReport.class));
+    List<UserReport> userReports = query.getResultList();
+    return userReports.stream().map(user -> user.getUserCode()).collect(Collectors.toList());
   }
 }

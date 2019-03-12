@@ -53,9 +53,9 @@ public class ATDPunchDAOImpl implements ATDPunchDAO {
         .setParameter("date", date);
     return query.getResultList();
   }
-  
+
   @Override
-  public List<ATDPunch> getAllPunchEntriesBeforeDates(Timestamp date ,List<String> userCodes) {
+  public List<ATDPunch> getAllPunchEntriesBeforeDates(Timestamp date, List<String> userCodes) {
     String queryString = SELECT_COLUMNS + " where a.Edatetime < :date and a.UserID in (:codes)";
     date = CalendarUtils.resetTimestampTime(date);
     date = CalendarUtils.addFieldToTimestamp(date, Calendar.DAY_OF_MONTH, 1);

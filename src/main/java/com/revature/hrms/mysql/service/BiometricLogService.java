@@ -17,4 +17,6 @@ public interface BiometricLogService {
       throws ParseException;
 
   List<Employee> getAllEmployees();
+
+  List<String> getEmployeeCodes();
 }

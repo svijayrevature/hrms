@@ -15,4 +15,6 @@ public interface BiometricLogDAO {
   List<UserReport> getUserLogReportBetweenTheDays(Timestamp startDate, Timestamp endDate);
 
   List<Employee> getAllEmployees();
+
+  List<String> getEmployeeCode();
 }

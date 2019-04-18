@@ -31,8 +31,8 @@ public class BiometricLogServiceImpl implements BiometricLogService {
   BiometricLogDAO biometricLogDAO;
 
   @Override
-  public List<BiometricLog> getAllBiometricLogs() {
-    return getBiometricLogDAO().getAllBiometricLogs();
+  public BiometricLog getLatestBiometricLog() {
+    return getBiometricLogDAO().getLatestBiometricLog();
   }
 
   @Override
@@ -102,8 +102,8 @@ public class BiometricLogServiceImpl implements BiometricLogService {
   }
 
   @Override
-  public List<Employee> getAllEmployees() {
-    return getBiometricLogDAO().getAllEmployees();
+  public List<BiometricLog> getAllEmployeesWithLatestLogs() {
+    return getBiometricLogDAO().getAllEmployeesWithLatestLogs();
   }
 
   @Override

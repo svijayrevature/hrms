@@ -56,7 +56,7 @@ public class HrmsMSSQLDBConfig {
     Properties properties = new Properties();
     properties.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLServer2012Dialect");
     properties.setProperty("hibernate.default_schema", "cosec1.dbo");
-    properties.setProperty("hibernate.show_sql", "true");
+    properties.setProperty("hibernate.show_sql", "false");
     properties.setProperty("hibernate.format_sql", "true");
     properties.setProperty("hibernate.use_sql_comments", "true");
     properties.setProperty("hibernate.generate_statistics", "false");

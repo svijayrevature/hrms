@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -47,26 +48,11 @@ public class ReportController {
   @RequestMapping(value = "/syncDatabases")
   @Scheduled(cron = "${rates.refresh.cron.log.sync}")
   public void getSQLReport() {
-    List<ATDPunch> atdPunches;
-    List<ATDPunch> oldPunches;
-    List<BiometricLog> biometricLogsInDB = getBiometricLogService().getAllBiometricLogs();
-    List<Timestamp> dates = biometricLogsInDB.stream().map(BiometricLog::getEntryTimestamp)
-        .distinct().collect(Collectors.toList());
-    List<Employee> employees = getBiometricLogService().getAllEmployees();
-    if (!CollectionUtils.isEmpty(dates)) {
-      oldPunches = getAtdPunchService().getAllPunchEntriesBeforeDates(Collections.max(dates),
-          biometricLogService.getEmployeeCodes());
-      atdPunches = getAtdPunchService().getAllPunchEntriesAfterDates(Collections.max(dates));
-      oldPunches.addAll(atdPunches);
-      atdPunches = oldPunches;
-    } else {
-      atdPunches = getAtdPunchService().getAllPunchEntries();
-    }
-    atdPunches =
-        atdPunches
-            .stream().filter(atdp -> employees.stream().map(Employee::getCode)
-                .collect(Collectors.toList()).contains(atdp.getUserId()))
-            .collect(Collectors.toList());
+    List<ATDPunch> atdPunches = new ArrayList<>();
+    List<BiometricLog> employees = getBiometricLogService().getAllEmployeesWithLatestLogs();
+    if (!CollectionUtils.isEmpty(employees)) {
+    	atdPunches = getAtdPunchService().getAllPunchEntriesForEmployees(employees);
+    } 
     long numberOfRecordsSaved = 0L;
     for (ATDPunch atdPunch : atdPunches) {
       BiometricLog biometricLog = new BiometricLog();

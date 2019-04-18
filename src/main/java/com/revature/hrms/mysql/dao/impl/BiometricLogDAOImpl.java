@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.revature.hrms.mysql.dao.BiometricLogDAO;
 import com.revature.hrms.mysql.dto.UserReport;
 import com.revature.hrms.mysql.model.BiometricLog;
-import com.revature.hrms.mysql.model.Employee;
 
 import lombok.Data;
 
@@ -36,9 +35,9 @@ public class BiometricLogDAOImpl implements BiometricLogDAO {
   }
 
   @Override
-  public List<BiometricLog> getAllBiometricLogs() {
-    String query = "from BiometricLog";
-    return getCurrentSession().createQuery(query).getResultList();
+  public BiometricLog getLatestBiometricLog() {
+    String query = "from BiometricLog order by entryTimestamp desc";
+    return (BiometricLog) getCurrentSession().createQuery(query).setMaxResults(1).getSingleResult();
   }
 
   @Override
@@ -73,9 +72,13 @@ public class BiometricLogDAOImpl implements BiometricLogDAO {
   }
 
   @Override
-  public List<Employee> getAllEmployees() {
-    String query = "from Employee";
-    return getCurrentSession().createQuery(query).getResultList();
+  public List<BiometricLog> getAllEmployeesWithLatestLogs() {
+    String query = "SELECT e.CODE userId,b.RECORD_TIMESTAMP entryTimestamp FROM employees e LEFT JOIN " + 
+    		"(SELECT user_id, MAX(RECORD_TIMESTAMP) RECORD_TIMESTAMP FROM biometric_logs GROUP BY user_id) b " + 
+    		"ON b.USER_ID = e.CODE ORDER BY e.CODE";
+    Query qr = getCurrentSession().createNativeQuery(query)
+            .setResultTransformer(Transformers.aliasToBean(BiometricLog.class));
+    return qr.getResultList(); 
   }
 
   @Override

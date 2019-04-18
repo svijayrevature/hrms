@@ -51,8 +51,8 @@ public class ReportController {
     List<ATDPunch> atdPunches = new ArrayList<>();
     List<BiometricLog> employees = getBiometricLogService().getAllEmployeesWithLatestLogs();
     if (!CollectionUtils.isEmpty(employees)) {
-    	atdPunches = getAtdPunchService().getAllPunchEntriesForEmployees(employees);
-    } 
+      atdPunches = getAtdPunchService().getAllPunchEntriesForEmployees(employees);
+    }
     long numberOfRecordsSaved = 0L;
     for (ATDPunch atdPunch : atdPunches) {
       BiometricLog biometricLog = new BiometricLog();

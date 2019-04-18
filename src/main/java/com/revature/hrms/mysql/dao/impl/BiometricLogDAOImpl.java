@@ -73,12 +73,13 @@ public class BiometricLogDAOImpl implements BiometricLogDAO {
 
   @Override
   public List<BiometricLog> getAllEmployeesWithLatestLogs() {
-    String query = "SELECT e.CODE userId,b.RECORD_TIMESTAMP entryTimestamp FROM employees e LEFT JOIN " + 
-    		"(SELECT user_id, MAX(RECORD_TIMESTAMP) RECORD_TIMESTAMP FROM biometric_logs GROUP BY user_id) b " + 
-    		"ON b.USER_ID = e.CODE ORDER BY e.CODE";
+    String query =
+        "SELECT e.CODE userId,b.RECORD_TIMESTAMP entryTimestamp FROM employees e LEFT JOIN "
+            + "(SELECT user_id, MAX(RECORD_TIMESTAMP) RECORD_TIMESTAMP FROM biometric_logs GROUP BY user_id) b "
+            + "ON b.USER_ID = e.CODE ORDER BY e.CODE";
     Query qr = getCurrentSession().createNativeQuery(query)
-            .setResultTransformer(Transformers.aliasToBean(BiometricLog.class));
-    return qr.getResultList(); 
+        .setResultTransformer(Transformers.aliasToBean(BiometricLog.class));
+    return qr.getResultList();
   }
 
   @Override

@@ -13,5 +13,5 @@ public interface ATDPunchDAO {
 
   List<ATDPunch> getAllPunchEntriesBeforeDates(Timestamp date, List<String> userCodes);
 
-List<ATDPunch> getAllPunchEntriesForEmployees(List<BiometricLog> employees);
+  List<ATDPunch> getAllPunchEntriesForEmployees(List<BiometricLog> employees);
 }

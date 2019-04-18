@@ -25,46 +25,6 @@ group = 'com.revature'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
-task fatJar(type: Jar) {
-    manifest {
-        attributes 'Implementation-Title': 'Gradle Jar File Example',
-                'Implementation-Version': version,
-                'Main-Class': 'com.mkyong.DateUtils'
-    }
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
-
-def getAppVersion() {
-    def appVersion = System.getenv('BUILD_NUMBER')
-    if (appVersion == null) {
-        appVersion = "Dev"
-    }
-    return appVersion
-}
-
-def getGitHash() {
-    def gitHash = System.getenv('GIT_COMMIT')
-    if (gitHash == null) {
-        gitHash = "Dev"
-    }
-    return gitHash
-}
-
-task appVersionBuilder {
-    doLast {
-        new File("$projectDir" + "/src/main/resources/version.json").text = """
-{	
-"Version": "${getAppVersion()}",
-"Revision": "${getGitHash()}",
-"Buildtime": "${new SimpleDateFormat('dd-MM-yyyy HH:mm:ss').format(new Date())}",
-"Application-name": "${appName}"
-}
-"""
-    }
-}
-
 spotless {
     java {
         eclipse().configFile 'tools/style.xml'
@@ -86,7 +46,6 @@ dependencies {
     compileOnly('org.projectlombok:lombok')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.5'
-    compile group: 'org.springframework', name: 'spring-orm', version: '5.1.1.RELEASE'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.0'
 }

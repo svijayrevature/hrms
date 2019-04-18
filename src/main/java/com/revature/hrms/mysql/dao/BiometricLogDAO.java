@@ -8,7 +8,7 @@ import com.revature.hrms.mysql.model.BiometricLog;
 import com.revature.hrms.mysql.model.Employee;
 
 public interface BiometricLogDAO {
-	BiometricLog getLatestBiometricLog();
+  BiometricLog getLatestBiometricLog();
 
   boolean saveOrUpdateBiometricLog(BiometricLog biometricLog);
 

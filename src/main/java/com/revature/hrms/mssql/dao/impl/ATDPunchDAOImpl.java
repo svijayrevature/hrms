@@ -30,13 +30,15 @@ public class ATDPunchDAOImpl implements ATDPunchDAO {
       "select ROW_NUMBER() OVER (order by Edatetime) ID,UserID " + ",Edatetime " + ",IOType "
           + "FROM Mx_AtdPunch a ";
 
-  private static final StringBuilder SELECT_TEMPLATE = new StringBuilder(" select ROW_NUMBER() OVER (order by Edatetime) ID,UserID ,Edatetime ,IOType ") 
-  		.append(" FROM Mx_AtdPunch a where UserID = {roleCode} AND Edatetime >= {time} ");
-  
+  private static final StringBuilder SELECT_TEMPLATE = new StringBuilder(
+      " select ROW_NUMBER() OVER (order by Edatetime) ID,UserID ,Edatetime ,IOType ")
+          .append(" FROM Mx_AtdPunch a where UserID = {roleCode} AND Edatetime >= {time} ");
 
-  private static final StringBuilder SELECT_TEMPLATE_NO_DATE = new StringBuilder(" select ROW_NUMBER() OVER (order by Edatetime) ID,UserID ,Edatetime ,IOType ") 
-  		.append(" FROM Mx_AtdPunch a where UserID = {roleCode} ");
-  
+
+  private static final StringBuilder SELECT_TEMPLATE_NO_DATE = new StringBuilder(
+      " select ROW_NUMBER() OVER (order by Edatetime) ID,UserID ,Edatetime ,IOType ")
+          .append(" FROM Mx_AtdPunch a where UserID = {roleCode} ");
+
   @Autowired
   @Qualifier("mssqlSessionFactory")
   private SessionFactory mssqlSessionFactory;
@@ -72,19 +74,21 @@ public class ATDPunchDAOImpl implements ATDPunchDAO {
         .setParameter("date", date).setParameter("codes", userCodes);
     return query.getResultList();
   }
-  
+
   @Override
-  public List<ATDPunch> getAllPunchEntriesForEmployees(List<BiometricLog> employees){
-	  String query = "";
-	  for(BiometricLog employee:employees) {
-		  if(Objects.nonNull(employee.getEntryTimestamp()))
-			  query  +=  (SELECT_TEMPLATE.toString().replace("{roleCode}", "'"+employee.getUserId()+"'").replace("{time}", "'"+employee.getEntryTimestamp().toString()+"'"));
-		  else
-			  query  +=  (SELECT_TEMPLATE_NO_DATE.toString().replace("{roleCode}","'"+ employee.getUserId()+"'"));  
-				  if(!employee.equals(employees.get(employees.size()-1))) {
-					  query += " UNION "; 
-				  }
-	  }
-	 return getCurrentSession().createNativeQuery(query, ATDPunch.class).getResultList();
+  public List<ATDPunch> getAllPunchEntriesForEmployees(List<BiometricLog> employees) {
+    String query = "";
+    for (BiometricLog employee : employees) {
+      if (Objects.nonNull(employee.getEntryTimestamp()))
+        query += (SELECT_TEMPLATE.toString().replace("{roleCode}", "'" + employee.getUserId() + "'")
+            .replace("{time}", "'" + employee.getEntryTimestamp().toString() + "'"));
+      else
+        query += (SELECT_TEMPLATE_NO_DATE.toString().replace("{roleCode}",
+            "'" + employee.getUserId() + "'"));
+      if (!employee.equals(employees.get(employees.size() - 1))) {
+        query += " UNION ";
+      }
+    }
+    return getCurrentSession().createNativeQuery(query, ATDPunch.class).getResultList();
   }
 }

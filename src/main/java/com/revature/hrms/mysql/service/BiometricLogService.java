@@ -9,7 +9,7 @@ import com.revature.hrms.mysql.model.BiometricLog;
 import com.revature.hrms.mysql.model.Employee;
 
 public interface BiometricLogService {
-	BiometricLog getLatestBiometricLog();
+  BiometricLog getLatestBiometricLog();
 
   boolean saveOrUpdateBiometricLog(BiometricLog biometricLog);
 

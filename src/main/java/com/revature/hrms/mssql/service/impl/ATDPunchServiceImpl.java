@@ -34,9 +34,9 @@ public class ATDPunchServiceImpl implements ATDPunchService {
   public List<ATDPunch> getAllPunchEntriesBeforeDates(Timestamp date, List<String> userCodes) {
     return getAtdPunchDAO().getAllPunchEntriesBeforeDates(date, userCodes);
   }
-  
+
   @Override
-  public List<ATDPunch> getAllPunchEntriesForEmployees(List<BiometricLog> employees){
-	  return getAtdPunchDAO().getAllPunchEntriesForEmployees(employees);
+  public List<ATDPunch> getAllPunchEntriesForEmployees(List<BiometricLog> employees) {
+    return getAtdPunchDAO().getAllPunchEntriesForEmployees(employees);
   }
 }

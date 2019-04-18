@@ -16,7 +16,6 @@ import com.revature.hrms.mysql.dao.BiometricLogDAO;
 import com.revature.hrms.mysql.dto.TimestampLog;
 import com.revature.hrms.mysql.dto.UserReport;
 import com.revature.hrms.mysql.model.BiometricLog;
-import com.revature.hrms.mysql.model.Employee;
 import com.revature.hrms.mysql.service.BiometricLogService;
 import com.revature.hrms.util.CalendarUtils;
 import com.revature.hrms.util.TypeConversionUtil;
@@ -28,7 +27,7 @@ import lombok.Data;
 public class BiometricLogServiceImpl implements BiometricLogService {
 
   @Autowired
-  BiometricLogDAO biometricLogDAO;
+  private BiometricLogDAO biometricLogDAO;
 
   @Override
   public BiometricLog getLatestBiometricLog() {

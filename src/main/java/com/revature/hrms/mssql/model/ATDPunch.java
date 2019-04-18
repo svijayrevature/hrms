@@ -11,24 +11,44 @@ import com.revature.hrms.util.TypeConversionUtil;
 
 import lombok.Data;
 
-@Data
-@Entity
-@Table(name = "Mx_AtdPunch")
 public class ATDPunch {
-  @Id
-  @Column(name = "ID")
-  private Long id;
 
-  @Column(name = "UserID")
   private String userId;
 
-  @Column(name = "Edatetime")
   private Timestamp entryTimestamp;
 
-  @Column(name = "IOType")
   private Boolean entryType;
+
+
+  public String getUserId() {
+    return userId;
+  }
+
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
+
+  public Timestamp getEntryTimestamp() {
+    return entryTimestamp;
+  }
+
+  public void setEntryTimestamp(Timestamp entryTimestamp) {
+    this.entryTimestamp = entryTimestamp;
+  }
+
+  public Boolean getEntryType() {
+    return entryType;
+  }
 
   public void setEntryType(Object entryType) {
     this.entryType = TypeConversionUtil.toBool(entryType);
   }
+
+  @Override
+  public String toString() {
+    return "ATDPunch [userId=" + userId + ", entryTimestamp=" + entryTimestamp + ", entryType="
+        + entryType + "]";
+  }
+
+
 }

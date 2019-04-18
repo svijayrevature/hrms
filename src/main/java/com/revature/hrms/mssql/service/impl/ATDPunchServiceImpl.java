@@ -1,6 +1,5 @@
 package com.revature.hrms.mssql.service.impl;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +17,7 @@ import lombok.Data;
 public class ATDPunchServiceImpl implements ATDPunchService {
 
   @Autowired
-  ATDPunchDAO atdPunchDAO;
-
-  @Override
-  public List<ATDPunch> getAllPunchEntries() {
-    return getAtdPunchDAO().getAllPunchEntries();
-  }
-
-  @Override
-  public List<ATDPunch> getAllPunchEntriesAfterDates(Timestamp date) {
-    return getAtdPunchDAO().getAllPunchEntriesNotInDates(date);
-  }
-
-  @Override
-  public List<ATDPunch> getAllPunchEntriesBeforeDates(Timestamp date, List<String> userCodes) {
-    return getAtdPunchDAO().getAllPunchEntriesBeforeDates(date, userCodes);
-  }
+  private ATDPunchDAO atdPunchDAO;
 
   @Override
   public List<ATDPunch> getAllPunchEntriesForEmployees(List<BiometricLog> employees) {

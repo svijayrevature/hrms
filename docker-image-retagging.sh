@@ -1,0 +1,24 @@
+# /bin/bash
+# To pull and retag and push a given docker image to the given repository
+
+PROJECT_NAME=$1
+SOURCE_TAG=$2
+DOCKER_REGISTRY_URL=$3
+DESTINATION_TAG=$4
+AWS_CRED_PATH=$5
+AWS_CONFIG_PATH=$6
+REGION=$7
+CLUSTER=$8
+SERVICE=$9
+TASK_DEFINITION=$10
+
+#Docker Login
+DOCKER_LOGIN="$(AWS_SHARED_CREDENTIALS_FILE=${AWS_CRED_PATH} AWS_CONFIG_FILE=${AWS_CONFIG_PATH} aws ecr get-login --no-include-email --region ${REGION} )"
+${DOCKER_LOGIN}
+docker pull ${DOCKER_REGISTRY_URL}/${PROJECT_NAME}:${SOURCE_TAG}
+docker tag ${DOCKER_REGISTRY_URL}/${PROJECT_NAME}:${SOURCE_TAG} ${DOCKER_REGISTRY_URL}/${PROJECT_NAME}:${DESTINATION_TAG}
+docker push ${DOCKER_REGISTRY_URL}/${PROJECT_NAME}:${DESTINATION_TAG}
+#AWS service update command
+echo "<<<<<<<<<<UPDATING THE AWS ECS PREDEFINED SERVICE>>>>>>>>>>"
+AWS_SHARED_CREDENTIALS_FILE=${AWS_CRED_PATH} AWS_CONFIG_FILE=${AWS_CONFIG_PATH} aws ecs update-service --cluster ${CLUSTER} --service ${SERVICE} --task-definition ${TASK_DEFINITION} --force-new-deployment
+echo "<<<<<<<<<<RESTARTED THE ECS CLUSTER SUCCESSFULLY>>>>>>>>>>"

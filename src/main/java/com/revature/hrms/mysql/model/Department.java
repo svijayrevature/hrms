@@ -1,7 +1,5 @@
 package com.revature.hrms.mysql.model;
 
-import java.sql.Timestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,16 +11,13 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "biometric_logs")
-public class BiometricLog {
+@Table(name = "departments")
+public class Department {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "ID")
   private Long id;
-  @Column(name = "USER_ID")
-  private String userId;
-  @Column(name = "RECORD_TIMESTAMP")
-  private Timestamp entryTimestamp;
-  @Column(name = "RECORD_TYPE")
-  private Boolean entryType;
+
+  @Column(name = "NAME", unique = true)
+  private String name;
 }

@@ -27,3 +27,17 @@ For the TCP/IP connection setup please do refer the document link below.
 [Connection JAVA settings for mssql](https://github.com/bhochhi/howto-guide/wiki/How-to-connect-SQL-Server-Using-Authentication-in-Spring-based-app.)
 
 [For making mssql a tcp port accessible Document](https://www-01.ibm.com/support/docview.wss?uid=swg21692573&aid=1)
+
+### Connection details
+
+If the mssql has instance access use the connection in the following way:
+
+`jdbc:sqlserver://<hostname>\\<instanceName>;DatabaseName=<databaseName>;`
+
+If through port:
+
+`jdbc:sqlserver://<hostname>:<portName>;DatabaseName=<databaseName>;`
+
+If through Microsoft or any integrated login type:
+
+`jdbc:sqlserver://<hostname>:<portName>;DatabaseName=<databaseName>;integratedSecurity=true`

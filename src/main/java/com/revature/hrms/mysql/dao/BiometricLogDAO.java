@@ -1,11 +1,20 @@
 package com.revature.hrms.mysql.dao;
 
-import com.revature.hrms.mysql.model.BiometricLog;
-
+import java.sql.Timestamp;
 import java.util.List;
 
-public interface BiometricLogDAO {
-    List<BiometricLog> getAllBiometricLogs();
+import com.revature.hrms.mysql.dto.UserReport;
+import com.revature.hrms.mysql.model.BiometricLog;
+import com.revature.hrms.mysql.model.Employee;
 
-    Integer saveOrUpdateAllBiometricLogs(List<BiometricLog> biometricLogs);
+public interface BiometricLogDAO {
+  List<BiometricLog> getAllBiometricLogs();
+
+  boolean saveOrUpdateBiometricLog(BiometricLog biometricLog);
+
+  List<UserReport> getUserLogReportBetweenTheDays(Timestamp startDate, Timestamp endDate);
+
+  List<Employee> getAllEmployees();
+
+  List<String> getEmployeeCode();
 }
